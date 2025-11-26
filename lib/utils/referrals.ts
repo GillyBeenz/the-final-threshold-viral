@@ -35,7 +35,7 @@ export async function createReferral(
         share_channel: shareChannel,
         user_agent: userAgent,
         source_page: 'landing',
-      })
+      } as any)
     
     if (error) {
       // If code collision (unlikely), try again
