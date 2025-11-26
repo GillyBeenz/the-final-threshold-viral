@@ -31,9 +31,10 @@ export async function POST(request: NextRequest) {
     
     // Update click as converted if clickId provided
     if (clickId) {
+      // @ts-ignore - Supabase type inference issue
       await supabase
         .from('clicks')
-        .update({ converted: true } as any)
+        .update({ converted: true })
         .eq('id', clickId)
     }
     
