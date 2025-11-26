@@ -12,7 +12,7 @@ export async function GET() {
     if (error) throw error
     
     // Add badges based on performance
-    const leaderboard = data.map((referrer, index) => {
+    const leaderboard = (data as any[]).map((referrer: any, index: number) => {
       let badge = ''
       const clicks = referrer.total_clicks
       

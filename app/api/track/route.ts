@@ -25,7 +25,7 @@ export async function POST(request: NextRequest) {
         .eq('referral_code', referralCode)
         .single()
       
-      referralId = data?.id || null
+      referralId = (data as any)?.id || null
     }
     
     // Insert click
@@ -39,13 +39,13 @@ export async function POST(request: NextRequest) {
         device_type: deviceType,
         landing_page: true,
         converted: false,
-      })
+      } as any)
       .select('id')
       .single()
     
     if (error) throw error
     
-    return NextResponse.json({ success: true, clickId: data.id })
+    return NextResponse.json({ success: true, clickId: (data as any)?.id })
   } catch (error) {
     console.error('Track error:', error)
     return NextResponse.json({ success: false, error: 'Failed to track' }, { status: 500 })

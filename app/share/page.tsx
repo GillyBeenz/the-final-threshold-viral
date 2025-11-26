@@ -23,12 +23,14 @@ export default function SharePage() {
       const code = nanoid(8)
       
       // Insert into database
-      const { error } = await supabase
+      const { data, error } = await supabase
         .from('referrals')
         .insert({
           referral_code: code,
           share_channel: 'link',
-        })
+        } as any)
+        .select()
+        .single()
       
       if (error) throw error
       

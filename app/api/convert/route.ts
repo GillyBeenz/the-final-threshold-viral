@@ -15,7 +15,7 @@ export async function POST(request: NextRequest) {
         .eq('referral_code', referralCode)
         .single()
       
-      referralId = data?.id || null
+      referralId = (data as any)?.id || null
     }
     
     // Insert conversion
@@ -25,7 +25,7 @@ export async function POST(request: NextRequest) {
         click_id: clickId,
         referral_id: referralId,
         amazon_url: amazonUrl,
-      })
+      } as any)
     
     if (conversionError) throw conversionError
     
@@ -33,7 +33,7 @@ export async function POST(request: NextRequest) {
     if (clickId) {
       await supabase
         .from('clicks')
-        .update({ converted: true })
+        .update({ converted: true } as any)
         .eq('id', clickId)
     }
     
