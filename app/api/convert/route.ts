@@ -29,14 +29,8 @@ export async function POST(request: NextRequest) {
     
     if (conversionError) throw conversionError
     
-    // Update click as converted if clickId provided
-    if (clickId) {
-      // @ts-ignore - Supabase type inference issue
-      await supabase
-        .from('clicks')
-        .update({ converted: true })
-        .eq('id', clickId)
-    }
+    // Note: Conversions are tracked in the conversions table
+    // The clicks table conversion flag is optional and can be updated later via admin dashboard
     
     return NextResponse.json({ success: true })
   } catch (error) {
