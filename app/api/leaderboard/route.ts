@@ -1,10 +1,10 @@
 import { NextResponse } from 'next/server'
-import { supabase } from '@/lib/supabase/client'
+import { supabaseServer } from '@/lib/supabase/server'
 
 export async function GET() {
   try {
     // Get top referrers with their stats
-    const { data, error } = await supabase
+    const { data, error } = await supabaseServer
       .from('top_referrers')
       .select('*')
       .limit(10)

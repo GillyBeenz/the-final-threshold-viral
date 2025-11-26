@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { supabase } from '@/lib/supabase/client'
+import { supabaseServer } from '@/lib/supabase/server'
 
 export async function POST(request: NextRequest) {
   try {
@@ -9,7 +9,7 @@ export async function POST(request: NextRequest) {
     // Get referral ID if code provided
     let referralId: string | null = null
     if (referralCode) {
-      const { data } = await supabase
+      const { data } = await supabaseServer
         .from('referrals')
         .select('id')
         .eq('referral_code', referralCode)
@@ -19,7 +19,7 @@ export async function POST(request: NextRequest) {
     }
     
     // Insert conversion
-    const { error: conversionError } = await supabase
+    const { error: conversionError } = await supabaseServer
       .from('conversions')
       .insert({
         click_id: clickId,
