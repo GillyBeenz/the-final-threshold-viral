@@ -52,7 +52,7 @@ export async function trackClick(params: {
         .eq('referral_code', params.referralCode)
         .single()
       
-      referralId = data?.id || null
+      referralId = (data as any)?.id || null
     }
     
     const { data, error } = await supabase
@@ -66,13 +66,13 @@ export async function trackClick(params: {
         ip_hash: ipHash,
         landing_page: params.landingPage ?? true,
         converted: false,
-      })
+      } as any)
       .select('id')
       .single()
     
     if (error) throw error
     
-    return { clickId: data?.id || null, error: null }
+    return { clickId: (data as any)?.id as string | null, error: null }
   } catch (err) {
     console.error('Error tracking click:', err)
     return { clickId: null, error: err as Error }
@@ -97,7 +97,7 @@ export async function trackConversion(params: {
         .eq('referral_code', params.referralCode)
         .single()
       
-      referralId = data?.id || null
+      referralId = (data as any)?.id || null
     }
     
     // Insert conversion
@@ -107,7 +107,7 @@ export async function trackConversion(params: {
         click_id: params.clickId,
         referral_id: referralId,
         amazon_url: params.amazonUrl,
-      })
+      } as any)
     
     if (conversionError) throw conversionError
     
@@ -115,7 +115,7 @@ export async function trackConversion(params: {
     if (params.clickId) {
       await supabase
         .from('clicks')
-        .update({ converted: true })
+        .update({ converted: true } as any)
         .eq('id', params.clickId)
     }
     
