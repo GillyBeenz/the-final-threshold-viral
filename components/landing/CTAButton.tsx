@@ -12,15 +12,24 @@ export function CTAButton() {
   const handleClick = async () => {
     setIsLoading(true)
     
-    // Get referral code from URL if present
-    const params = new URLSearchParams(window.location.search)
-    const referralCode = params.get('ref')
-    
-    // Track conversion
-    await trackConversion({
-      referralCode: referralCode || undefined,
-      amazonUrl: process.env.NEXT_PUBLIC_AMAZON_PAPERBACK_URL!,
-    })
+    try {
+      // Get stored tracking data
+      const clickId = sessionStorage.getItem('clickId')
+      const referralCode = sessionStorage.getItem('referralCode')
+      
+      // Track conversion
+      await fetch('/api/convert', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          clickId: clickId || undefined,
+          referralCode: referralCode || undefined,
+          amazonUrl: process.env.NEXT_PUBLIC_AMAZON_PAPERBACK_URL!,
+        }),
+      })
+    } catch (error) {
+      console.error('Failed to track conversion:', error)
+    }
     
     // Redirect to Amazon
     window.location.href = process.env.NEXT_PUBLIC_AMAZON_PAPERBACK_URL!
