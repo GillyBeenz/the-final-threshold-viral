@@ -111,13 +111,8 @@ export async function trackConversion(params: {
     
     if (conversionError) throw conversionError
     
-    // Update click as converted if clickId provided
-    if (params.clickId) {
-      await supabase
-        .from('clicks')
-        .update({ converted: true } as any)
-        .eq('id', params.clickId)
-    }
+    // Note: Conversions are tracked in the conversions table
+    // The clicks table conversion flag can be updated via admin dashboard if needed
     
     return { success: true, error: null }
   } catch (err) {
