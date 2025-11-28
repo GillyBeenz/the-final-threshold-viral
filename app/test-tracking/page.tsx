@@ -1,9 +1,9 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 
-export default function TestTracking() {
+function TestTrackingContent() {
   const searchParams = useSearchParams()
   const [status, setStatus] = useState<any>({})
   const [loading, setLoading] = useState(true)
@@ -108,5 +108,17 @@ export default function TestTracking() {
         </div>
       </div>
     </div>
+  )
+}
+
+export default function TestTracking() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen p-8 bg-threshold-900 text-white flex items-center justify-center">
+        <p className="text-threshold-400">Loading test page...</p>
+      </div>
+    }>
+      <TestTrackingContent />
+    </Suspense>
   )
 }
