@@ -9,6 +9,8 @@ interface Stats {
   totalClicks: number
   totalReferrals: number
   totalConversions: number
+  referralConversions: number
+  directConversions: number
   conversionRate: number
 }
 
@@ -28,6 +30,8 @@ export default function AdminDashboard() {
     totalClicks: 0,
     totalReferrals: 0,
     totalConversions: 0,
+    referralConversions: 0,
+    directConversions: 0,
     conversionRate: 0,
   })
   const [topReferrers, setTopReferrers] = useState<TopReferrer[]>([])
@@ -200,6 +204,16 @@ export default function AdminDashboard() {
               <TrendingUp className="w-5 h-5 text-accent-cyan" />
             </div>
             <p className="text-3xl font-bold text-threshold-100">{stats.totalConversions}</p>
+            <div className="mt-2 text-xs text-threshold-400 space-y-1">
+              <div className="flex justify-between">
+                <span>From Referrals:</span>
+                <span className="text-accent-cyan font-semibold">{stats.referralConversions}</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Direct:</span>
+                <span className="text-threshold-300 font-semibold">{stats.directConversions}</span>
+              </div>
+            </div>
           </div>
 
           {/* Conversion Rate */}
