@@ -37,13 +37,26 @@ export function CTAButton() {
 
   return (
     <div className="max-w-2xl mx-auto space-y-4">
+      <div className="text-center mb-3">
+        <p className="text-accent-cyan font-semibold text-sm mb-1">
+          📖 FREE First Chapter Preview
+        </p>
+        <p className="text-threshold-400 text-xs">
+          No signup required • Instant access • Available now on Amazon
+        </p>
+      </div>
+      
       <Button
         onClick={handleClick}
         disabled={isLoading}
-        className="w-full text-lg py-6 bg-accent-cyan hover:bg-accent-cyan/90 text-threshold-900 font-bold"
+        className="w-full text-lg py-6 bg-accent-cyan hover:bg-accent-cyan/90 text-threshold-900 font-bold shadow-lg shadow-accent-cyan/20"
       >
-        {isLoading ? 'Entering...' : 'Enter the Threshold'}
+        {isLoading ? 'Redirecting...' : '📚 Read FREE Preview on Amazon'}
       </Button>
+      
+      <p className="text-center text-threshold-500 text-xs">
+        ⭐⭐⭐⭐⭐ Rated 4.8/5 by early readers
+      </p>
       
       <button
         onClick={() => router.push('/share')}
