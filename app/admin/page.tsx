@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { supabase } from '@/lib/supabase/client'
 import { BarChart3, Users, TrendingUp, MousePointerClick, Lock } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 
@@ -70,38 +69,15 @@ export default function AdminDashboard() {
 
   const fetchAnalytics = async () => {
     try {
-      // Fetch total clicks
-      const { count: clicksCount } = await supabase
-        .from('clicks')
-        .select('*', { count: 'exact', head: true })
+      const response = await fetch('/api/analytics')
+      const data = await response.json()
 
-      // Fetch total referrals
-      const { count: referralsCount } = await supabase
-        .from('referrals')
-        .select('*', { count: 'exact', head: true })
-
-      // Fetch total conversions
-      const { count: conversionsCount } = await supabase
-        .from('conversions')
-        .select('*', { count: 'exact', head: true })
-
-      // Fetch top referrers
-      const { data: topData } = await supabase
-        .from('top_referrers')
-        .select('*')
-        .limit(10)
-
-      const totalClicks = clicksCount || 0
-      const totalConversions = conversionsCount || 0
-
-      setStats({
-        totalClicks,
-        totalReferrals: referralsCount || 0,
-        totalConversions,
-        conversionRate: totalClicks > 0 ? (totalConversions / totalClicks) * 100 : 0,
-      })
-
-      setTopReferrers(topData || [])
+      if (data.success) {
+        setStats(data.stats)
+        setTopReferrers(data.topReferrers)
+      } else {
+        console.error('Failed to fetch analytics:', data.error)
+      }
     } catch (error) {
       console.error('Error fetching analytics:', error)
     } finally {
