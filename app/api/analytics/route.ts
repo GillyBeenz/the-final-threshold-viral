@@ -13,10 +13,16 @@ export async function GET() {
       .from('referrals')
       .select('*', { count: 'exact', head: true })
 
-    // Fetch total conversions
+    // Fetch total conversions (all conversions)
     const { count: conversionsCount } = await supabaseServer
       .from('conversions')
       .select('*', { count: 'exact', head: true })
+
+    // Fetch conversions from clicks (only those with click_id for conversion rate)
+    const { count: clickConversionsCount } = await supabaseServer
+      .from('conversions')
+      .select('*', { count: 'exact', head: true })
+      .not('click_id', 'is', null)
 
     // Fetch top referrers
     const { data: topReferrers } = await supabaseServer
@@ -26,6 +32,7 @@ export async function GET() {
 
     const totalClicks = clicksCount || 0
     const totalConversions = conversionsCount || 0
+    const clickConversions = clickConversionsCount || 0
 
     return NextResponse.json({
       success: true,
@@ -33,7 +40,7 @@ export async function GET() {
         totalClicks,
         totalReferrals: referralsCount || 0,
         totalConversions,
-        conversionRate: totalClicks > 0 ? (totalConversions / totalClicks) * 100 : 0,
+        conversionRate: totalClicks > 0 ? (clickConversions / totalClicks) * 100 : 0,
       },
       topReferrers: topReferrers || [],
     })
